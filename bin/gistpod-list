@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+var gist = require('../')
+  , Helpers = require('../lib/helpers')
+
+gist.getAllCachedPodspecGists(function (err, gists) {
+    if (err) { Helpers.CLI.dieError(err) }
+    else     { Helpers.CLI.print(Helpers.formatGistList(gists)) }
+})
