@@ -1,6 +1,6 @@
 {
 	"name": "gistpod",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "CLI helpers for hosting ad-hoc CocoaPods podspecs as GitHub gists during rapid development",
 	"main": "index.js",
 	"scripts": {
@@ -10,6 +10,7 @@
 		"gistpod": "./bin/gistpod",
 		"gistpod-list": "./bin/gistpod-list",
 		"gistpod-url": "./bin/gistpod-url",
+        "gistpod-pull": "./bin/gistpod-pull",
 		"gistpod-update": "./bin/gistpod-update",
         "gistpod-username": "./bin/gistpod-username"
 	},

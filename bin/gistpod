@@ -11,10 +11,11 @@ Helpers.touchCache()
 var program = require('commander')
 program
     .version('0.0.1')
-    .command('username <username>', 'set the GitHub username from which to retrieve gists (config file: ~/.gistpod)')
-    .command('url <pod>',           'look up the latest gist URL for the specified CocoaPod')
-    .command('update',              'update the local cache (~/.gistpod-cache) by querying the GitHub API')
-    .command('list',                'list known podspec gists')
+    .command('username <username>',         'set the GitHub username from which to retrieve gists (config file: ~/.gistpod)')
+    .command('url <pod>',                   'look up the latest gist URL for the specified CocoaPod')
+    .command('pull',                        'pull the latest data from the GitHub API into your local cache (~/.gistpod-cache)')
+    .command('update <Podfile> [pods...]',  'updates the gist refs for the given Pods in the specified Podfile to the latest revisions')
+    .command('list',                        'list known podspec gists')
     .parse(process.argv)
 
 

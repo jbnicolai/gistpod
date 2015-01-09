@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+var gist = require('../')
+  , Helpers = require('../lib/helpers')
+
+Helpers.readConfig(function (err, config) {
+    if (err) { Helpers.dieError(err) }
+    else
+    {
+        if (config.username == null || config.username == undefined) {
+            Helpers.CLI.dieError('You have to set your GitHub username with the command: "gistpod username <username>".')
+        }
+
+        gist.updateGistPodspecURLCache(config.username, function (err) {
+            if (err) { Helpers.CLI.dieError(err) }
+            else     { Helpers.CLI.print('Gist podspecs updated.') }
+        })
+    }
+})
+
+

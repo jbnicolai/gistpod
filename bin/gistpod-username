@@ -14,7 +14,7 @@ else
 {
     var username = program.args[0]
 
-    gist.writeValueToConfig('username', username, function (err, raw_url) {
+    gist.writeValueToConfig('username', username, function (err) {
         if (err) { Helpers.CLI.dieError(err) }
         else     { Helpers.CLI.print('GitHub username set.') }
     })
