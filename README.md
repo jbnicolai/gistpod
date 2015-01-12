@@ -21,30 +21,30 @@ Podfile updated.
 
 # moar examples
 
-    ```
-     $ gistpod list
+```
+ $ gistpod list
 
-    Pod                      Podspec gist URL
-    -------------------      ------------------------------------------------------------------
-    ReactiveCocoaSwift       https://gist.github.com/brynbellomy/.../ReactiveCocoaSwift.podspec
-    JSTilemap                https://gist.github.com/brynbellomy/.../JSTilemap.podspec
-    Signals                  https://gist.github.com/brynbellomy/.../Signals.podspec
-    Starscream               https://gist.github.com/brynbellomy/.../Starscream.podspec
-    Basis                    https://gist.github.com/brynbellomy/.../Basis.podspec
+Pod                      Podspec gist URL
+-------------------      ------------------------------------------------------------------
+ReactiveCocoaSwift       https://gist.github.com/brynbellomy/.../ReactiveCocoaSwift.podspec
+JSTilemap                https://gist.github.com/brynbellomy/.../JSTilemap.podspec
+Signals                  https://gist.github.com/brynbellomy/.../Signals.podspec
+Starscream               https://gist.github.com/brynbellomy/.../Starscream.podspec
+Basis                    https://gist.github.com/brynbellomy/.../Basis.podspec
 
-    # the update command is:
-    # $ gistpod update [Podfile directory] [pods to update]
-    $ gistpod update . Starscream ReactiveCocoa-Swift
+# the update command is:
+# $ gistpod update [Podfile directory] [pods to update]
+$ gistpod update . Starscream ReactiveCocoa-Swift
 
-    Podfile updated.
-    ```
+Podfile updated.
+```
 
 - `gistpod list`:
     
     0. queries your GitHub account for all gists containing at least one `podspec` file — i.e., matching the pattern `*.podspec`...
     0. ...and displays the direct, raw URL to the latest revision of each podspec's gist.
 
-*(Note: just to be totally clear, I added the dot-dot-dots.  The command gives the full path.)*
+    *(Note: just to be totally clear, I added the dot-dot-dots.  The command gives the full path.)*
 
 -------------
 
