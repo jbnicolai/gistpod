@@ -8,20 +8,17 @@ var program = require('commander')
 program.parse(process.argv)
 
 
-if (program.args.length < 2) {
-    Helpers.CLI.dieError('Not enough arguments!')
-}
-else
-{
-    var podfileFilename = program.args[0]
-    var podsToUpdate = program.args.slice(1)
+var podfileDir   = (program.args.length > 0) ? program.args[0]       : '.'
+var podsToUpdate = (program.args.length > 1) ? program.args.slice(1) : []
 
-    PodfileUpdater.podfileWithUpdatedGistRefs(podfileFilename, podsToUpdate, function (err, podfile) {
-        if (err) { Helpers.CLI.dieError(err) }
-        else     { Helpers.CLI.print(podfile) }
-    })
-}
+PodfileUpdater.podfileBySubstitutingGistpodRefs(podfileDir, podsToUpdate, function (err, podfile) {
+    if (err) { Helpers.CLI.dieError(err) }
+    else {
+        PodfileUpdater.writePodfile(podfileDir, podfile, function (err, output) {
+            if (err) { Helpers.CLI.dieError(err) }
+            Helpers.CLI.print(output)
+        })
+    }
+})
 
 
-// var podfileFilename = path.join( process.env['HOME'], 'projects', '_swift', 'ArmsControl', 'Podfile' )
-// var podsToUpdate = ['ReactiveCocoaSwift', 'Starscream']
