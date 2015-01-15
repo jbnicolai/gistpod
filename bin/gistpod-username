@@ -1,22 +1,23 @@
 #!/usr/bin/env node
 
-var gist = require('../')
-  , Helpers = require('../lib/helpers')
-
 var program = require('commander')
+  , CLI = require('../lib/cli')
+  , Config = require('../lib/config')
+
+
 program.parse(process.argv)
 
 
 if (program.args.length < 1) {
-    Helpers.CLI.dieError('Missing argument: GitHub username')
+    CLI.dieError('Missing argument: GitHub username')
 }
 else
 {
     var username = program.args[0]
 
-    gist.writeValueToConfig('username', username, function (err) {
-        if (err) { Helpers.CLI.dieError(err) }
-        else     { Helpers.CLI.print('GitHub username set.') }
+    Config.writeValueToConfig('username', username, function (err) {
+        if (err) { CLI.dieError(err) }
+        else     { CLI.print('GitHub username set.') }
     })
 }
 

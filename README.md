@@ -1,9 +1,28 @@
 
 # gistpod
 
+```
+Usage: gistpod [options] [command]
+
+
+  Commands:
+
+    username <username>         set the GitHub username from which to retrieve gists (config file: ~/.gistpod)
+    url <pod>                   look up the latest gist URL for the specified CocoaPod
+    pull                        pull the latest data from the GitHub API into your local cache (~/.gistpod-cache)
+    update <Podfile> [pods...]  updates the gist refs for the given Pods (or all Pods, if none are specified) in the specified Podfile to the latest revisions
+    list                        list known podspec gists
+    help [cmd]                  display help for [cmd]
+
+  Options:
+
+    -h, --help     output usage information
+    -V, --version  output the version number
+```
+
 CLI tool (written in node.js) to facilitate using GitHub gists as temporary CocoaPods podspecs.
 
-**Works with Swift-enabled CocoaPods** (`gem install cocoapods --pre`).  In fact, that's pretty much the only reason I made this.
+**Works with Swift-enabled versions of CocoaPods** (`gem install cocoapods --pre`).  In fact, that's pretty much the only reason I made this.
 
 Given how much of the Swift code out in the wild still has no official podspec (and, for that matter, given all of the one-page microclasses I've found myself writing in Swift), I've been using **gists** (<https://gist.github.com>) pretty frequently to deal with temporary (and rapidly-changing) podspecs during fast development cycles.
 
@@ -74,20 +93,20 @@ Set your GitHub username (one-time):
 $ gistpod username brynbellomy
 ```
 
-
-
-# main usage/workflow
-
-### 1. Pull your latest gist commit history down from GitHub:
+Now you can list all of the podspecs that you have stored as gists:
 
 ```sh
-$ gistpod pull
+$ gistpod list
 ```
 
 _**@@TODO:** display a diff if there were any changes_
 
 
-### 2. Make a copy of your `Podfile` called `Podfile.gistpod`.
+
+
+# main usage/workflow
+
+### 1. Make a copy of your `Podfile` called `Podfile.gistpod`.
 
 Put it in `<project root>`, alongside the original:
 
@@ -95,7 +114,7 @@ Put it in `<project root>`, alongside the original:
 $ cp Podfile Podfile.gistpod
 ```
 
-### 3. Open `Podfile.gistpod`.
+### 2. Open `Podfile.gistpod`.
 
 You will need to change the `:podspec => '...'` URLs for any of the podspecs that you want to keep automatically synced with your gists account.  The entire podspec URL (including quotes) must be replaced with the placeholder `#{PodName}`.
 
@@ -116,6 +135,18 @@ platform :osx, '10.10'
 pod 'Starscream', :podspec => #{Starscream}
 pod 'ReactiveCocoa-Swift', :podspec => #{ReactiveCocoa-Swift}
 ```
+
+
+
+### 3. Update your local cache of podspec URLs with `gistpod pull`.
+
+```sh
+$ gistpod pull
+```
+
+_**@@TODO:** display a diff if there were any changes_
+
+
 
 
 ### 4. Run `gistpod update` to update the URLs in your `Podfile`.

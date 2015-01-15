@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
-var gist = require('../')
-  , Helpers = require('../lib/helpers')
+var CLI = require('../lib/cli')
+  , Cache = require('../lib/cache')
 
-gist.getAllCachedPodspecGists(function (err, gists) {
-    if (err) { Helpers.CLI.dieError(err) }
-    else     { Helpers.CLI.print(Helpers.formatGistList(gists)) }
+
+Cache.readGistCache(function (err, gists) {
+    if (err) { CLI.dieError(err) }
+    else     { CLI.print(CLI.formatGistList(gists)) }
 })
