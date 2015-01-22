@@ -16,11 +16,38 @@
 	},
 	"author": "bryn austin bellomy <bryn.bellomy@gmail.com>",
 	"license": "WTFPL",
+	"subcommands": {
+		"username": "set the GitHub username from which to retrieve gists (config file: ~/.gistpod)",
+		"url": "look up the latest gist URL for the specified CocoaPod",
+		"pull": "pull the latest data from the GitHub API into your local cache (~/.gistpod-cache)",
+		"update": "updates the gist refs for the given Pods (or all Pods, if none are specified) in the specified Podfile to the latest revisions",
+		"list": "list known podspec gists"
+	},
 	"dependencies": {
 		"async": "0.9.x",
 		"cliff": "0.1.x",
 		"commander": "2.6.x",
 		"fs-extra": "0.14.x",
-		"request": "2.51.x"
+		"request": "2.51.x",
+		"cli-components": "0.0.x",
+		"hoagie": "0.6.x"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/brynbellomy/nanu-nanu.git"
+	},
+	"keywords": [
+		"hello",
+		"welcome",
+		"hi",
+		"cli",
+		"terminal"
+	],
+	"bugs": {
+		"url": "https://github.com/brynbellomy/nanu-nanu/issues"
+	},
+	"homepage": "https://github.com/brynbellomy/nanu-nanu",
+	"devDependencies": {
+		"eyes": "0.1.x"
 	}
 }

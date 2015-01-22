@@ -1,10 +1,17 @@
 #!/usr/bin/env node
 
-var CLI = require('../lib/cli')
-  , Cache = require('../lib/cache')
+var cli = require('cli-components')
+  , io = cli.IO
+// var CLI = require('../lib/cli')
+//   , Cache = require('../lib/cache')
 
 
 Cache.readGistCache(function (err, gists) {
-    if (err) { CLI.dieError(err) }
-    else     { CLI.print(CLI.formatGistList(gists)) }
+    if (err) { io.dieError(err) }
+    else     { io.print(CLI.formatGistList(gists)) }
 })
+
+var c = new c.Cache('gistpod')
+c.fileManager.ensureFile()
+                     .done(() => c.store('some new key', 'some new vaaaaalue'))
+                     .catch(err => console.log('ERROR =', err))
