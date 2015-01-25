@@ -30,7 +30,9 @@
 		"fs-extra": "0.14.x",
 		"request": "2.51.x",
 		"cli-components": "0.0.x",
-		"hoagie": "0.6.x"
+		"hoagie": "0.6.x",
+		"shelljs": "0.3.x",
+		"chalk": "0.5.x"
 	},
 	"repository": {
 		"type": "git",

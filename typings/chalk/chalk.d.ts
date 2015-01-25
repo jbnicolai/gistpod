@@ -14,7 +14,7 @@ declare module Chalk {
 	}
 
 	export interface ChalkChain extends ChalkStyle {
-		(...text: string[]): string;
+		(...text: string[]): ChalkChain;
 	}
 
 	export interface ChalkStyleElement {

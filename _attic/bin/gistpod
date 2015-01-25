@@ -1,21 +1,21 @@
 #!/usr/bin/env node
 
-var Cache = require('../lib/cache')
-  , Config = require('../lib/config')
-  , CLI = require('../lib/cli')
-import config = require('./config')
+// var Cache = require('../lib/cache')
+//   , Config = require('../lib/config')
+//   , CLI = require('../lib/cli')
+// import config = require('./config')
 
 require('hoagie')(require('../package'))
 
 
 
-Config.ensureConfig(function (err) {
-    if (err) { CLI.dieError(err) }
+// Config.ensureConfig(function (err) {
+//     if (err) { CLI.dieError(err) }
 
-    Cache.ensureCache(function (err) {
-        if (err) { CLI.dieError(err) }
-    })
-})
+//     Cache.ensureCache(function (err) {
+//         if (err) { CLI.dieError(err) }
+//     })
+// })
 
 
 // var program = require('commander')
