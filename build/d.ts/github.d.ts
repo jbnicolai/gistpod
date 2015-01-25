@@ -1,30 +1,7 @@
-/// <reference path='../../typings/tsd.d.ts' />
-
-import request   = require('request')
-import when      = require('when')
-import when_node = require('when/node')
-import http      = require('http')
-
-
-export function getAllGists (username:string) :when.Promise<Gist[]>
-{
-    var options :request.Options = {
-        headers: { 'User-Agent': 'gistpod' },
-        // url: "https://api.github.com/users/" + username + "/gists",
-    }
-
-    return when.promise((resolve, reject) => {
-                request("https://api.github.com/users/" + username + "/gists", options, (error:any, response:any, body:string) => {
-                    if (response.statusCode != 200) { return reject(new Error('Error: GitHub API response status code was "' + response.statusCode + '"')) }
-                    return resolve(body)
-                })
-            })
-            .then(body => when.attempt(JSON.parse, body))
-            .then(gistArray => <Gist[]>gistArray)
-}
-
-export interface Gist
-{
+/// <reference path="../../typings/tsd.d.ts" />
+import when = require('when');
+export declare function getAllGists(username: string): when.Promise<Gist[]>;
+export interface Gist {
     url: string;
     forks_url: string;
     commits_url: string;
@@ -42,11 +19,9 @@ export interface Gist
     comments_url: string;
     owner: GistOwner;
 }
-
 export interface GistFilesDictionary {
     [index: string]: GistFileMetadata;
 }
-
 export interface GistFileMetadata {
     filename: string;
     type: string;
@@ -54,7 +29,6 @@ export interface GistFileMetadata {
     raw_url: string;
     size: number;
 }
-
 export interface GistOwner {
     login: string;
     id: number;

@@ -1,49 +1,57 @@
 {
-    "folders": [
-        {
-            "follow_symlinks": true,
-            "path": "/Users/bryn/projects/_node.js/gistpod",
-            "binary_file_patterns": [".git"],
-            "folder_exclude_patterns": []
-        },
-        {
-            "follow_symlinks": true,
-            "path": ".",
-            "name": "gistpod",
-            "binary_file_patterns": [".git"],
-            "folder_exclude_patterns": []
-        }
-    ],
-    "settings": {
-        "typescript": {
-            "roots": [
-                "index.ts"
-            ],
-            "settings": {
-                "auto_complete": true,
-                "build_on_save": false,
-                "build_parameters": {
-                    "allow_bool_synonym": false,
-                    "allow_import_module_synonym": false,
-                    "concatenate_and_emit_output_file_path": "none",
-                    "ecmascript_target": "ES6",
-                    "generate_declaration": false,
-                    "generate_source_map": false,
-                    "map_files_root_path": "none",
-                    "module_kind": "commonjs",
-                    "no_implicit_any_warning": false,
-                    "output_dir_path": ".",
-                    "post_processing_commands": [],
-                    "pre_processing_commands": [],
-                    "remove_comments_from_output": false,
-                    "skip_resolution_and_preprocessing": false,
-                    "source_files_root_path": "."
-                },
-                "error_on_save_only": false,
-                "node_path": "/Users/bryn/.nvm/v0.11.14/bin/",
-                "show_build_file": false
-            }
-        }
-    }
- }
-
+	"folders":
+	[
+		{
+			"binary_file_patterns":
+			[
+				".git"
+			],
+			"folder_exclude_patterns":
+			[
+			],
+			"follow_symlinks": true,
+			"name": "gistpod",
+			"path": "."
+		}
+	],
+	"settings":
+	{
+		"typescript":
+		{
+			"roots":
+			[
+				"src/lib/gistpod.ts"
+			],
+			"settings":
+			{
+				"auto_complete": true,
+				"build_on_save": false,
+				"build_parameters":
+				{
+					"allow_bool_synonym": false,
+					"allow_import_module_synonym": false,
+					"concatenate_and_emit_output_file_path": "none",
+					"ecmascript_target": "ES6",
+					"generate_declaration": false,
+					"generate_source_map": false,
+					"map_files_root_path": "none",
+					"module_kind": "commonjs",
+					"no_implicit_any_warning": false,
+					"output_dir_path": ".",
+					"post_processing_commands":
+					[
+					],
+					"pre_processing_commands":
+					[
+					],
+					"remove_comments_from_output": false,
+					"skip_resolution_and_preprocessing": false,
+					"source_files_root_path": "."
+				},
+				"error_on_save_only": false,
+				"node_path": "/Users/bryn/.nvm/v0.11.14/bin/",
+				"show_build_file": false
+			}
+		}
+	}
+}

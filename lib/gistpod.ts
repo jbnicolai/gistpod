@@ -22,22 +22,22 @@ class Gistpod
 
         return when.join(configPromise, cachePromise)
                    .then(results => {
-                        var config :cli.Config = results[0]
-                        return Gistpod .ensureUsername(config)
-                                       .then(config   => { return { config:config, cache:results[1] } })
+                        return Gistpod .ensureUsername(<cli.Config>results[0])
+                                       .then(config   => { return { config:config, cache:<cli.Cache>results[1] } })
                     })
                    .then(args => new Gistpod(args.config, args.cache))
     }
 
-    static ensureUsername(config:cli.Config) :when.Promise<string>
+    static ensureUsername(config:cli.Config) :when.Promise<cli.Config>
     {
         return when.promise((resolve, reject) => {
             var username :string = config.fetch('username')
             if (username === null || username === undefined || username.length == 0) {
                 // @@TODO: prompt user for input
+                console.log('PROMPT USER FOR INPUT')
             }
             else {
-                return when.resolve(username)
+                return when.resolve(config)
             }
         })
         .then(username => config.store('username', username).save() )

@@ -1,5 +1,4 @@
-/// <reference path='../typings/tsd.d.ts' />
-/// <reference path='../node_modules/cli-components/build/index.d.ts'/>
+/// <reference path='../../typings/tsd.d.ts' />
 
 import path           = require('path')
 import fs             = require('fs-extra')
@@ -13,22 +12,28 @@ import $ = cli
 
 var fsp = when_node.liftAll(fs)
 
-export = PodfileUpdater
+export = PodfileUpdateCommand
 
 class PodfileUpdateCommand
 {
     podfileDir: string;
-    cache: $.Cache
+    cache: $.Cache;
 
-    constructor(_cache: $.Cache, podfileDir:string) {
+    constructor(_cache: $.Cache) {
         this.cache = _cache
     }
 
-    writePodfile (podfileDir:string, podfileContents:string) :when.Promise<PodfileUpdater>
+    writePodfileFromTemplate (podfileDir:string) :when.Promise<void>
+    {
+        return this.expandPodfileVariables(podfileDir)
+                   .then(newContents => this.writePodfile(podfileDir, newContents))
+    }
+
+    writePodfile (podfileDir:string, podfileContents:string) :when.Promise<void> //PodfileUpdateCommand>
     {
         var podfilePath = path.join(podfileDir, 'Podfile')
         return this.backupPodfile(podfilePath)
-                   .then(() => { fsp.writeFile(podfilePath, podfileContents) ; return this })
+                   .then(() => fsp.writeFile(podfilePath, podfileContents))
     }
 
 
@@ -59,17 +64,7 @@ class PodfileUpdateCommand
         return podfileContents
     }
 
-
-    // findAllVariablesInPodfile (podfile:string) :string[]
-    // {
-    //     var matches = podfile.match(/#\{[a-zA-Z0-9_\-\+]+\}/g)
-    //     return (matches != null && matches != undefined)
-    //                     ? matches.map(str => str.replace(/[#\{\}]/g, ''))
-    //                     : []
-    // }
-
-    backupPodfile (podfilePath) :when.Promise<string>
-    {
+    backupPodfile (podfilePath) :when.Promise<string> {
         var backupDir = $.file.tmpdir()
         return $.file.createBackup(podfilePath, backupDir)
     }

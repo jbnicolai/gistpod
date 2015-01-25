@@ -1,4 +1,4 @@
-/// <reference path='../typings/tsd.d.ts' />
+/// <reference path='../../typings/tsd.d.ts' />
 
 import Gistpod = require('../lib/gistpod')
 import cli = require('cli-components')

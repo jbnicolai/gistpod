@@ -1,0 +1,45 @@
+#!/usr/bin/env node --harmony
+
+/// <reference path='../../typings/tsd.d.ts' />
+var cli = require('cli-components');
+var chalk = require('chalk');
+var cliff = require('cliff');
+var CommandRouter = require('command-router');
+var Gistpod = require('../lib/gistpod');
+var r = new CommandRouter();
+var args = [].concat(process.argv);
+args.shift();
+args.shift();
+Gistpod.load().then(function (gistpod) {
+    r.command('update', function () {
+        var podfileDir = (args.length > 0) ? args[0] : '.';
+        gistpod.writePodfileFromTemplate(podfileDir).catch(function (err) { return cli.io.dieError(err); }).done(function () { return cli.io.println('Podfile updated.'); });
+    });
+    r.command('pull', function () {
+        gistpod.updateGistCacheFromAPI().catch(function (err) { return cli.io.dieError(err); }).done(function () { return cli.io.println('Gist podspecs updated.'); });
+    });
+    r.command('list', function () {
+        var gists = gistpod.fetchAllPodspecInfo();
+        cli.io.println(formatGistList(gists));
+    });
+    r.command('username', function () {
+        var username = args.shift();
+        Gistpod.load().then(function (gistpod) { return gistpod.setGithubUsername(username); }).catch(function (err) { return cli.io.dieError(err); }).done(function (x) { return cli.io.println('GitHub username set.'); });
+    });
+    r.command('url', function () {
+        var podName = args.shift();
+        Gistpod.load().then(function (gistpod) { return gistpod.fetchPodspecInfo(podName); }).then(function (podspec) { return cli.io.print(podspec.raw_url); }).catch(function (err) { return cli.io.dieError(err); });
+    });
+    // logn()
+    r.parse(process.argv);
+    // logn()
+});
+function formatGistList(gists) {
+    var rows = [[chalk.underline.bold('Pod'), chalk.underline.bold('Podspec gist URL')],];
+    for (var i in gists) {
+        var gist = gists[i];
+        var row = [chalk.blue(gist.name), gist.raw_url];
+        rows.push(row);
+    }
+    return '\n' + cliff.stringifyRows(rows, ['cyan', 'green']);
+}

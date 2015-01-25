@@ -1,28 +1,34 @@
 #!/usr/bin/env node --harmony
 var CommandRouter = require('command-router')
-  , tasks = CommandRouter()
+  , tasks = new CommandRouter()
+  , path = require('path')
+  , extend = require('extend')
 
-var $ = require('./build/index')
+var $ = require('cli-components')
 $.buildTools.addToGlobalScope()
 
 /**
     configuration
 */
 
-var SOURCES = ['src/lib/gistpod.ts', 'src/bin/*.ts'] //, 'src/io.ts', 'src/file.ts', 'src/config.ts', 'src/cache.ts', 'src/build-tools.ts']
+var SOURCES             = ['lib/gistpod.ts']
+var EXECUTABLE_SOURCES  = ['bin/gistpod.ts']
+var SOURCE_ROOT         = 'src'
+var BUILD_ROOT          = 'build'
 
 var BUILD_OUTPUT_FILETYPES = /(\.d\.ts|\.js|\.js\.map)$/
-
-var BUILD_OUTPUT_PATHS = ['./build']
 
 var TSD_UMBRELLA_INCLUDE_PATH = './typings/tsd.d.ts'
 
 var TS_COMPILER_CMD = 'tsc'
 
-var TS_COMPILER_ARGS =  [   '--module commonjs'
-                          , '--target ES6'
-                          , '--declaration'
-                          , '--outDir ./build' ]
+function TS_COMPILER_ARGS(args)
+{
+    return extend({
+        module: 'commonjs'
+      , target: 'ES6'
+    }, args)
+}
 
 
 /**
@@ -33,29 +39,38 @@ tasks.command('',        function () { buildFiles(SOURCES) })
 tasks.command('build',   function () { buildFiles(SOURCES) })
 tasks.command('build *', function () { buildFiles(tasks.params.splats) })
 tasks.command('clean',   function () {
-    BUILD_OUTPUT_PATHS.forEach(function (path) {
-        $.file.removeFileTypesFromDir(BUILD_OUTPUT_FILETYPES, path)
-    })
+    $.file.removeFileTypesFromDir(BUILD_OUTPUT_FILETYPES, BUILD_ROOT)
 })
+
 tasks.on('notfound', function (action) {
-    console.error('Unknown command.')
-    process.exit(1)
+    $.io.dieError(new Error('Unknown command.'))
 })
 
 
 function buildFiles(buildFiles)
 {
-    mkdir('-p', './build')
+    rm('-rf', BUILD_ROOT)
 
-    var cmd = [].concat(TS_COMPILER_CMD, TS_COMPILER_ARGS, buildFiles).join(' ')
-    var result = exec(cmd)
+    mkdir('-p', BUILD_ROOT + '/lib')
+    mkdir('-p', BUILD_ROOT + '/bin')
+    mkdir('-p', BUILD_ROOT + '/d.ts')
 
-    if (result.code !== 0) {
-        process.exit(result.code)
-    }
+    tsc(SOURCE_ROOT, SOURCES,            BUILD_ROOT + '/lib', TS_COMPILER_ARGS({declaration: true}))
+    tsc(SOURCE_ROOT, EXECUTABLE_SOURCES, BUILD_ROOT,          TS_COMPILER_ARGS({}))
 
-    cp('-f', 'src/*.js', 'build/')
+    ls(BUILD_ROOT + '/lib/*.d.ts').forEach(function (file) {
+        mv(file, BUILD_ROOT + '/d.ts')
+    })
+
+    ls('build/bin/*.js').forEach(function (filename) {
+        chmod('+x', filename)
+        $.file.prependStringToFile(filename, '#!/usr/bin/env node --harmony\n')
+        mv(filename, filename.replace('.js', ''))
+    })
+
+    // cp('-fR', 'src/*.js', 'build/')
 }
+
 
 
 

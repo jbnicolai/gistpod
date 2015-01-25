@@ -1,25 +1,20 @@
-/// <reference path='../typings/tsd.d.ts'/>
-/// <reference path='../node_modules/cli-components/build/index.d.ts'/>
+/// <reference path='../../typings/tsd.d.ts' />
 
 import Gistpod = require('../lib/gistpod')
 import cli = require('cli-components')
 
-cli.yargs
+var args = process.argv ; args.shift() ; args.shift()
 
-var program = require('commander')
-program.parse(process.argv)
-
-
-if (program.args.length < 1) {
+if (args.length < 1) {
     cli.io.dieError('Not enough arguments!')
 }
 
-var podName = program.args.shift()
+var podName = args.shift()
 
 Gistpod.load()
-       .then(gistpod => gistpod.fetchPodInfo(podName))
+       .then (gistpod => gistpod.fetchPodspecInfo(podName))
        .catch(err => cli.io.dieError(err))
-       .done (url => cli.io.print(url))
+       .done (podspec => cli.io.print(podspec.raw_url))
 
 
 
