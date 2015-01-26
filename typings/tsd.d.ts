@@ -12,4 +12,5 @@
 /// <reference path="../node_modules/cli-components/build/config.d.ts" />
 /// <reference path="../node_modules/cli-components/build/build-tools.d.ts" />
 /// <reference path="../../_d.ts/cliff/cliff.d.ts" />
-/// <reference path="../../_d.ts/command-router/command-router.d.ts" />
+/// <reference path="../node_modules/command-router/command-router.d.ts" />
+/// <reference path="../../_d.ts/inquirer/inquirer.d.ts" />

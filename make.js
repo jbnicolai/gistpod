@@ -5,7 +5,7 @@ var CommandRouter = require('command-router')
   , extend = require('extend')
 
 var $ = require('cli-components')
-$.buildTools.addToGlobalScope()
+$.build.addToGlobalScope()
 
 /**
     configuration
@@ -16,18 +16,12 @@ var EXECUTABLE_SOURCES  = ['bin/gistpod.ts']
 var SOURCE_ROOT         = 'src'
 var BUILD_ROOT          = 'build'
 
-var BUILD_OUTPUT_FILETYPES = /(\.d\.ts|\.js|\.js\.map)$/
+var BUILD_OUTPUT_FILETYPES = ['.js', '.js.map', '.d.ts']
 
 var TSD_UMBRELLA_INCLUDE_PATH = './typings/tsd.d.ts'
 
-var TS_COMPILER_CMD = 'tsc'
-
-function TS_COMPILER_ARGS(args)
-{
-    return extend({
-        module: 'commonjs'
-      , target: 'ES6'
-    }, args)
+function TS_COMPILER_ARGS(args) {
+    return extend({ module: 'commonjs' , target: 'ES6' }, args)
 }
 
 
@@ -35,16 +29,12 @@ function TS_COMPILER_ARGS(args)
     tasks
  */
 
-tasks.command('',        function () { buildFiles(SOURCES) })
-tasks.command('build',   function () { buildFiles(SOURCES) })
-tasks.command('build *', function () { buildFiles(tasks.params.splats) })
-tasks.command('clean',   function () {
-    $.file.removeFileTypesFromDir(BUILD_OUTPUT_FILETYPES, BUILD_ROOT)
-})
+tasks.command('',                                                           function () { $.io.println(tasks.helpText()) })
+tasks.command('build',   'Builds the project.',                             function () { buildFiles(SOURCES) })
+tasks.command('build *', 'Builds specific file[s] from the project.',       function () { buildFiles(tasks.params.splats) })
+tasks.command('clean',   'Removes built products from the build folder.',   function () { $.file.removeFileTypesFromDir(BUILD_OUTPUT_FILETYPES, BUILD_ROOT) })
 
-tasks.on('notfound', function (action) {
-    $.io.dieError(new Error('Unknown command.'))
-})
+tasks.on('notfound', function (action) { $.io.println(tasks.helpText()) })
 
 
 function buildFiles(buildFiles)
@@ -55,8 +45,8 @@ function buildFiles(buildFiles)
     mkdir('-p', BUILD_ROOT + '/bin')
     mkdir('-p', BUILD_ROOT + '/d.ts')
 
-    tsc(SOURCE_ROOT, SOURCES,            BUILD_ROOT + '/lib', TS_COMPILER_ARGS({declaration: true}))
-    tsc(SOURCE_ROOT, EXECUTABLE_SOURCES, BUILD_ROOT,          TS_COMPILER_ARGS({}))
+    $.build.compileTypescript(SOURCE_ROOT, SOURCES,            BUILD_ROOT + '/lib', TS_COMPILER_ARGS({declaration: true}))
+    $.build.compileTypescript(SOURCE_ROOT, EXECUTABLE_SOURCES, BUILD_ROOT,          TS_COMPILER_ARGS({}))
 
     ls(BUILD_ROOT + '/lib/*.d.ts').forEach(function (file) {
         mv(file, BUILD_ROOT + '/d.ts')
@@ -67,8 +57,6 @@ function buildFiles(buildFiles)
         $.file.prependStringToFile(filename, '#!/usr/bin/env node --harmony\n')
         mv(filename, filename.replace('.js', ''))
     })
-
-    // cp('-fR', 'src/*.js', 'build/')
 }
 
 
@@ -78,7 +66,7 @@ function buildFiles(buildFiles)
     entry point
  */
 
-logn()
+$.io.println()
 tasks.parse(process.argv)
-logn()
+$.io.println()
 

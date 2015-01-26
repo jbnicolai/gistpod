@@ -3,7 +3,7 @@
 import cli = require('cli-components')
 import when = require('when')
 import path = require('path')
-// import inquirer = require('inquirer')
+import inquirer = require('inquirer')
 
 import GitHub = require('./github')
 import PodfileUpdater = require('./podfile-updater')
@@ -33,14 +33,15 @@ class Gistpod
     {
         return when.promise((resolve, reject) => {
             var username :string = config.fetch('username')
-            if (username === null || username === undefined || username.length == 0) {
-                // @@TODO: prompt user for input
-                username = 'brynbellomy'
-                return resolve(username)
+            if (username === null || username === undefined || username.length == 0)
+            {
+                var questions = [ { type: "input", name: "username", message: "Enter your GitHub username:", } ]
+                inquirer.prompt(questions, (answers) => {
+                    resolve(answers.username)
+                    return
+                })
             }
-            else {
-                return resolve(username)
-            }
+            else { return resolve(username) }
         })
         .then(username => config.store('username', username).save() )
     }

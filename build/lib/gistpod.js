@@ -2,7 +2,7 @@
 var cli = require('cli-components');
 var when = require('when');
 var path = require('path');
-// import inquirer = require('inquirer')
+var inquirer = require('inquirer');
 var GitHub = require('./github');
 var PodfileUpdater = require('./podfile-updater');
 var GistCacheEntry = require('./gist-cache-entry');
@@ -25,9 +25,11 @@ var Gistpod = (function () {
         return when.promise(function (resolve, reject) {
             var username = config.fetch('username');
             if (username === null || username === undefined || username.length == 0) {
-                // @@TODO: prompt user for input
-                username = 'brynbellomy';
-                return resolve(username);
+                var questions = [{ type: "input", name: "username", message: "Enter your GitHub username:", }];
+                inquirer.prompt(questions, function (answers) {
+                    resolve(answers.username);
+                    return;
+                });
             }
             else {
                 return resolve(username);

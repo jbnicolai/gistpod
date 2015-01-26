@@ -1,18 +1,13 @@
 {
 	"name": "gistpod",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"description": "CLI helpers for hosting ad-hoc CocoaPods podspecs as GitHub gists during rapid development",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"bin": {
-		"gistpod": "./bin/gistpod",
-		"gistpod-list": "./bin/gistpod-list",
-		"gistpod-url": "./bin/gistpod-url",
-		"gistpod-pull": "./bin/gistpod-pull",
-		"gistpod-update": "./bin/gistpod-update",
-		"gistpod-username": "./bin/gistpod-username"
+		"gistpod": "./bin/gistpod"
 	},
 	"author": "bryn austin bellomy <bryn.bellomy@gmail.com>",
 	"license": "WTFPL",
@@ -29,16 +24,15 @@
 		"commander": "2.6.x",
 		"fs-extra": "0.14.x",
 		"request": "2.51.x",
-		"cli-components": "0.1.2",
+		"cli-components": "0.2.5",
 		"hoagie": "0.6.x",
 		"shelljs": "0.3.x",
 		"chalk": "0.5.x",
-		"typescript": "1.4.x",
 		"when": "3.6.x"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/brynbellomy/nanu-nanu.git"
+		"url": "git://github.com/brynbellomy/gistpod.git"
 	},
 	"keywords": [
 		"hello",
@@ -48,10 +42,12 @@
 		"terminal"
 	],
 	"bugs": {
-		"url": "https://github.com/brynbellomy/nanu-nanu/issues"
+		"url": "https://github.com/brynbellomy/gistpod/issues"
 	},
-	"homepage": "https://github.com/brynbellomy/nanu-nanu",
+	"homepage": "https://github.com/brynbellomy/gistpod",
 	"devDependencies": {
-		"eyes": "0.1.x"
+		"eyes": "0.1.x",
+        "typescript": "1.4.x",
+        "command-router": "git://github.com/brynbellomy/command-router#master"
 	}
 }

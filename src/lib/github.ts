@@ -15,8 +15,11 @@ export function getAllGists (username:string) :when.Promise<Gist[]>
 
     return when.promise((resolve, reject) => {
                 request("https://api.github.com/users/" + username + "/gists", options, (error:any, response:any, body:string) => {
-                    if (response.statusCode != 200) { return reject(new Error('Error: GitHub API response status code was "' + response.statusCode + '"')) }
-                    return resolve(body)
+                    switch (response.statusCode) {
+                        case 200: return resolve(body)
+                        case 404:
+                        default:  return reject(new Error('Error: GitHub API response status code was "' + response.statusCode + '".  Did you set your username correctly?'))
+                    }
                 })
             })
             .then(body => when.attempt(JSON.parse, body))

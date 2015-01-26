@@ -1,58 +1,52 @@
 /// <reference path='../../typings/tsd.d.ts' />
 
-import cli            = require('cli-components')
+import $              = require('cli-components')
 import chalk          = require('chalk')
 import cliff          = require('cliff')
+import when           = require('when')
 import CommandRouter  = require('command-router')
 
 import Gistpod        = require('../lib/gistpod')
 import GistCacheEntry = require('../lib/gist-cache-entry')
 
 var r = new CommandRouter()
-
-var args :string[] = [].concat(process.argv)
-args.shift()
-args.shift()
+var args :string[] = [].concat(process.argv).slice(2)
 
 Gistpod.load().then((gistpod) => {
+    r.on('notfound', () => {
+        $.io.println(r.helpText())
+        process.exit(1)
+    })
 
-    r.command('update', () => {
+    r.command('update', '(Over)writes the Podfile in the current directory with a newly-generated one based on Podfile.gistpod.', () => {
         var podfileDir = (args.length > 0) ? args[0] : '.'
-        gistpod.writePodfileFromTemplate(podfileDir)
-               .catch(err   => cli.io.dieError(err))
-               .done (()    => cli.io.println('Podfile updated.'))
+        return gistpod.writePodfileFromTemplate(podfileDir)
+                      .then(() => 'Podfile updated.')
     })
 
-    r.command('pull', () => {
-        gistpod.updateGistCacheFromAPI()
-               .catch(err => cli.io.dieError(err))
-               .done(() => cli.io.println('Gist podspecs updated.'))
+    r.command('pull', 'Pulls your latest gist information from GitHub into your local cache.', () => {
+        return gistpod.updateGistCacheFromAPI()
+                      .then(() => 'Cache updated.')
     })
 
-    r.command('list', () => {
+    r.command('list', 'Lists the podspecs found in your GitHub gist account.', () => {
         var gists = gistpod.fetchAllPodspecInfo()
-        cli.io.println(formatGistList(gists))
+        return when.resolve(formatGistList(gists))
     })
 
-    r.command('username', () => {
-        var username = args.shift()
-        Gistpod.load()
-               .then(gistpod => gistpod.setGithubUsername(username))
-               .catch(err => cli.io.dieError(err))
-               .done (x   => cli.io.println('GitHub username set.'))
-   })
-
-    r.command('url', () => {
-        var podName = args.shift()
-        Gistpod.load()
-               .then (gistpod => gistpod.fetchPodspecInfo(podName))
-               .then (podspec => cli.io.print(podspec.raw_url))
-               .catch(err => cli.io.dieError(err))
+    r.command('username :username', 'Sets the GitHub username of the gists account you want to source podspecs from.', () => {
+        return gistpod.setGithubUsername(r.params.username)
+                      .then(() => 'Username set.')
     })
 
-    // logn()
+    r.command('url :podName', 'Prints the url of the gist containing the specified podspec.', () => {
+        return when.resolve(gistpod.fetchPodspecInfo(r.params.podName))
+                   .then((podspec) => podspec.raw_url)
+    })
+
     r.parse(process.argv)
-    // logn()
+       .then (text => $.io.print(text))
+       .catch(err  => $.io.dieError(err))
 })
 
 

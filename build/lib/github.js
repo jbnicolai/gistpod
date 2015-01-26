@@ -7,23 +7,12 @@ function getAllGists(username) {
     };
     return when.promise(function (resolve, reject) {
         request("https://api.github.com/users/" + username + "/gists", options, function (error, response, body) {
-            if (response.statusCode != 200) {
-                return reject(new Error('Error: GitHub API response status code was "' + response.statusCode + '"'));
+            switch (response.statusCode) {
+                case 200: return resolve(body);
+                case 404:
+                default: return reject(new Error('Error: GitHub API response status code was "' + response.statusCode + '".  Did you set your username correctly?'));
             }
-            return resolve(body);
         });
-    }).then(function (body) { return when.attempt(JSON.parse, body); }).then(function (gistArray) { return gistArray; }); //{
-    //       var asdf :Gist[] = gistArray
-    // })
-    // when.attempt(JSON.parse, body)
-    //     // .done(resolve, reject)
-    //     .done(gistArray => resolve(<Gist[]>gistArray), reject)
-    // try {
-    //     var gists = <Gist[]>JSON.parse(body)
-    //     return resolve(gists)
-    // }
-    // catch (error) { reject(error) }
-    // })
-    // })
+    }).then(function (body) { return when.attempt(JSON.parse, body); }).then(function (gistArray) { return gistArray; });
 }
 exports.getAllGists = getAllGists;
