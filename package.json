@@ -1,6 +1,6 @@
 {
 	"name": "gistpod",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "CLI helpers for hosting ad-hoc CocoaPods podspecs as GitHub gists during rapid development",
 	"main": "index.js",
 	"scripts": {
@@ -28,7 +28,8 @@
 		"hoagie": "0.6.x",
 		"shelljs": "0.3.x",
 		"chalk": "0.5.x",
-		"when": "3.6.x"
+		"when": "3.6.x",
+        "command-router": "git://github.com/brynbellomy/command-router#master"
 	},
 	"repository": {
 		"type": "git",
@@ -47,7 +48,6 @@
 	"homepage": "https://github.com/brynbellomy/gistpod",
 	"devDependencies": {
 		"eyes": "0.1.x",
-        "typescript": "1.4.x",
-        "command-router": "git://github.com/brynbellomy/command-router#master"
+        "typescript": "1.4.x"
 	}
 }
