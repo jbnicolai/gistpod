@@ -2,12 +2,12 @@
 	"name": "gistpod",
 	"version": "0.2.2",
 	"description": "CLI helpers for hosting ad-hoc CocoaPods podspecs as GitHub gists during rapid development",
-	"main": "index.js",
+	"main": "build/lib/gistpod.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"bin": {
-		"gistpod": "./build/bin/gistpod"
+		"gistpod": "build/bin/gistpod"
 	},
 	"author": "bryn austin bellomy <bryn.bellomy@gmail.com>",
 	"license": "WTFPL",
