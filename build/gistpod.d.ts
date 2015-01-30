@@ -1,4 +1,4 @@
-/// <reference path="../../typings/tsd.d.ts" />
+/// <reference path="../typings/tsd.d.ts" />
 import cli = require('cli-components');
 import when = require('when');
 import PodfileUpdater = require('./podfile-updater');

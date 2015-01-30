@@ -20,8 +20,6 @@ Gistpod.load().then((gistpod) => {
 
     r.command('update', '(Over)writes the Podfile in the current directory with a newly-generated one based on Podfile.gistpod.', () => {
         var podfileDir = (args.length > 0) ? args[0] : '.'
-        console.log('args = ', args)
-        console.log('podfileDir = ', podfileDir)
         return gistpod.writePodfileFromTemplate(podfileDir)
                       .then(() => 'Podfile updated.')
     })

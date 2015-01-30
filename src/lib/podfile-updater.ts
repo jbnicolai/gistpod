@@ -49,10 +49,8 @@ class PodfileUpdateCommand
                   .then(buffer => buffer.toString())
                   .then((templateContents :string) => {
                       return templateContents.match(/#\{[a-zA-Z0-9_\-\+]+\}/g)
-                                      .map(str => { var x = str.replace(/[#\{\}]/g, ''); console.log('match => ', x); return x })
-                                      .reduce((pfcontents:string, foundpod:string) => {
-                                            return this.expandVariable(pfcontents, foundpod)
-                                        }, templateContents)
+                                      .map(str => str.replace(/[#\{\}]/g, ''))
+                                      .reduce((pfcontents:string, foundpod:string) => this.expandVariable(pfcontents, foundpod), templateContents)
                   })
     }
 

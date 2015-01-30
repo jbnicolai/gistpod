@@ -45,7 +45,7 @@ function buildFiles(buildFiles)
     mkdir('-p', BUILD_ROOT + '/bin')
     mkdir('-p', BUILD_ROOT + '/d.ts')
 
-    $.build.compileTypescript(SOURCE_ROOT, SOURCES,            BUILD_ROOT + '/lib', TS_COMPILER_ARGS({declaration: true}))
+    $.build.compileTypescript(SOURCE_ROOT, SOURCES,            BUILD_ROOT, TS_COMPILER_ARGS({declaration: true}))
     $.build.compileTypescript(SOURCE_ROOT, EXECUTABLE_SOURCES, BUILD_ROOT,          TS_COMPILER_ARGS({}))
 
     ls(BUILD_ROOT + '/lib/*.d.ts').forEach(function (file) {

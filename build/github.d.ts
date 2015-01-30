@@ -1,4 +1,4 @@
-/// <reference path="../../typings/tsd.d.ts" />
+/// <reference path="../typings/tsd.d.ts" />
 import when = require('when');
 export declare function getAllGists(username: string): when.Promise<Gist[]>;
 export interface Gist {
