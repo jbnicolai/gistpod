@@ -8,7 +8,7 @@ var when = require('when');
 var CommandRouter = require('command-router');
 var Gistpod = require('../lib/gistpod');
 var r = new CommandRouter();
-var args = [].concat(process.argv).slice(2);
+var args = [].concat(process.argv).slice(3);
 Gistpod.load().then(function (gistpod) {
     r.on('notfound', function () {
         $.io.println(r.helpText());
@@ -16,6 +16,8 @@ Gistpod.load().then(function (gistpod) {
     });
     r.command('update', '(Over)writes the Podfile in the current directory with a newly-generated one based on Podfile.gistpod.', function () {
         var podfileDir = (args.length > 0) ? args[0] : '.';
+        console.log('args = ', args);
+        console.log('podfileDir = ', podfileDir);
         return gistpod.writePodfileFromTemplate(podfileDir).then(function () { return 'Podfile updated.'; });
     });
     r.command('pull', 'Pulls your latest gist information from GitHub into your local cache.', function () {

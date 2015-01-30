@@ -46,7 +46,7 @@
 					],
 					"remove_comments_from_output": false,
 					"skip_resolution_and_preprocessing": false,
-					"source_files_root_path": "."
+					//"source_files_root_path": "."
 				},
 				"error_on_save_only": false,
 				"node_path": "/Users/bryn/.nvm/v0.11.14/bin/",

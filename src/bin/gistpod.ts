@@ -10,7 +10,7 @@ import Gistpod        = require('../lib/gistpod')
 import GistCacheEntry = require('../lib/gist-cache-entry')
 
 var r = new CommandRouter()
-var args :string[] = [].concat(process.argv).slice(2)
+var args :string[] = [].concat(process.argv).slice(3)
 
 Gistpod.load().then((gistpod) => {
     r.on('notfound', () => {
@@ -20,6 +20,8 @@ Gistpod.load().then((gistpod) => {
 
     r.command('update', '(Over)writes the Podfile in the current directory with a newly-generated one based on Podfile.gistpod.', () => {
         var podfileDir = (args.length > 0) ? args[0] : '.'
+        console.log('args = ', args)
+        console.log('podfileDir = ', podfileDir)
         return gistpod.writePodfileFromTemplate(podfileDir)
                       .then(() => 'Podfile updated.')
     })

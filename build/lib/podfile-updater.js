@@ -19,19 +19,28 @@ var PodfileUpdateCommand = (function () {
     };
     PodfileUpdateCommand.prototype.expandPodfileVariables = function (podfileDir) {
         var _this = this;
-        var filenames = {
+        var PATHS = {
             'Podfile': path.join(podfileDir, 'Podfile'),
             'Podfile.gistpod': path.join(podfileDir, 'Podfile.gistpod'),
         };
-        return fsp.readFile(filenames['Podfile.gistpod'], 'utf8').then(function (podfileContents) {
-            var regex = /#\{[a-zA-Z0-9_\-\+]+\}/g;
-            return $.file.findMatchesIn(podfileContents, regex).map(function (str) { return str.replace(/[#\{\}]/g, ''); }).reduce(_this.expandVariable, podfileContents);
+        return fsp.readFile(PATHS['Podfile.gistpod'], 'utf8').then(function (buffer) { return buffer.toString(); }).then(function (templateContents) {
+            return templateContents.match(/#\{[a-zA-Z0-9_\-\+]+\}/g).map(function (str) {
+                var x = str.replace(/[#\{\}]/g, '');
+                console.log('match => ', x);
+                return x;
+            }).reduce(function (pfcontents, foundpod) {
+                return _this.expandVariable(pfcontents, foundpod);
+            }, templateContents);
         });
     };
     PodfileUpdateCommand.prototype.expandVariable = function (podfileContents, foundPod) {
-        var url = this.cache.fetch(foundPod);
-        if (url != null && url != undefined) {
-            var currentPodspecURL = url.replace('githubusercontent.com', 'github.com');
+        var gists = this.cache.fetch('gists');
+        if (gists == null || gists == undefined) {
+            return podfileContents;
+        }
+        var entry = gists.filter(function (entry) { return entry.name == foundPod; }).shift(); //[foundPod]
+        if (entry != null && entry != undefined) {
+            var currentPodspecURL = entry.raw_url.replace('githubusercontent.com', 'github.com');
             podfileContents = podfileContents.replace('#{' + foundPod + '}', "'" + currentPodspecURL + "'");
         }
         return podfileContents;
